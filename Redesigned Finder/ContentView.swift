@@ -8,14 +8,28 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var filename = ""
+    @State private var isFilePresent = false
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+            TextField("Enter file name", text: $filename)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+            Button(action: {
+                let utils = Utils()
+                self.isFilePresent = utils.isFilePresentOnDesktop(filename: self.filename)
+            }, label: {
+                Text("Check if file exists")
+            })
+            if isFilePresent {
+                Text("The file '\(filename)' exists on the desktop.")
+                    .padding()
+            } else {
+                Text("The file '\(filename)' does not exist on the desktop.")
+                    .padding()
+            }
         }
-        .padding()
     }
 }
 
